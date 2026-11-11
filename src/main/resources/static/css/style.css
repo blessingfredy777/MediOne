@@ -1,0 +1,810 @@
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Common Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+section {
+    scroll-margin-top: 85px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fbff;
+}
+
+/* Navigation Bar */
+.medione-navbar {
+    background-color: #ffffff;
+    padding: 18px 0;
+    box-shadow: 0 3px 20px rgba(20, 70, 120, 0.08);
+}
+
+/* Logo */
+.medione-logo {
+    color: #1256a0 !important;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.medione-logo span {
+    color: #18a6c9;
+}
+
+.medione-logo small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #718096;
+    margin-top: 5px;
+}
+
+/* Navigation Links */
+.medione-navbar .nav-link {
+    color: #34445b;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.medione-navbar .nav-link:hover,
+.medione-navbar .nav-link.active {
+    color: #1479d1;
+}
+
+/* Login Button */
+.login-btn {
+    text-decoration: none;
+    color: #1769aa;
+    font-weight: 600;
+    padding: 11px 22px;
+    border: 1px solid #1769aa;
+    border-radius: 8px;
+    margin-right: 10px;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #1769aa;
+    color: white;
+}
+
+/* Register Button */
+.register-btn {
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, #1769aa, #18a6c9);
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.register-btn:hover {
+    background: #10548e;
+    color: white;
+}
+
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero-section {
+    padding: 85px 0;
+    background: linear-gradient(120deg, #f0f7ff, #ffffff);
+    overflow: hidden;
+}
+
+.hero-content {
+    padding-right: 35px;
+}
+
+.hero-tag {
+    display: inline-block;
+    color: #1479d1;
+    background: #e1f1ff;
+    padding: 9px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 22px;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #17365d;
+    margin-bottom: 22px;
+}
+
+.hero-content h1 span {
+    color: #1689cf;
+}
+
+.hero-content p {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.9;
+    max-width: 520px;
+    margin-bottom: 30px;
+}
+
+/* Hero Buttons */
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.hero-primary-btn,
+.hero-secondary-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hero-primary-btn {
+    color: white;
+    background: linear-gradient(135deg, #1769aa, #18a6c9);
+    box-shadow: 0 8px 18px rgba(23, 105, 170, 0.2);
+}
+
+.hero-primary-btn:hover {
+    color: white;
+    transform: translateY(-3px);
+}
+
+.hero-secondary-btn {
+    color: #1769aa;
+    border: 1px solid #1769aa;
+    background: white;
+}
+
+.hero-secondary-btn:hover {
+    color: white;
+    background: #1769aa;
+}
+
+/* Trust Points */
+.hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    color: #486078;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Hero Image */
+.hero-image {
+    text-align: center;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 540px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 25px;
+    box-shadow: 0 20px 45px rgba(20, 70, 120, 0.15);
+}
+
+/* Mobile Responsive */
+@media (max-width: 991px) {
+    .hero-section {
+        padding: 55px 0;
+    }
+
+    .hero-content {
+        padding-right: 12px;
+        margin-bottom: 40px;
+    }
+
+    .hero-content h1 {
+        font-size: 38px;
+    }
+
+    .hero-image img {
+        height: 320px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .hero-trust {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
+
+/* =========================
+   HOSPITAL HIGHLIGHTS
+========================= */
+
+.highlights-section {
+    padding: 80px 0;
+    background: #ffffff;
+}
+
+/* Section Heading */
+.section-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-heading span {
+    color: #1689cf;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    color: #17365d;
+    font-size: 34px;
+    font-weight: 800;
+    margin: 12px 0;
+}
+
+.section-heading p {
+    color: #718096;
+    font-size: 15px;
+}
+
+/* Feature Cards */
+.highlight-card {
+    background: #ffffff;
+    padding: 30px 22px;
+    height: 100%;
+    text-align: center;
+    border: 1px solid #e6eff8;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(20, 70, 120, 0.06);
+    transition: all 0.3s ease;
+}
+
+.highlight-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(20, 70, 120, 0.13);
+    border-color: #b9dcf7;
+}
+
+.highlight-icon {
+    width: 70px;
+    height: 70px;
+    background: #eaf5ff;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1689cf;
+    margin: 0 auto 20px;
+    transition: 0.3s;
+}
+
+.highlight-icon svg {
+    width: 35px;
+    height: 35px;
+    display: block;
+}
+
+.highlight-card:hover .highlight-icon {
+    background: #1689cf;
+    color: #ffffff;
+}
+
+.highlight-card h5 {
+    color: #17365d;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.highlight-card p {
+    color: #718096;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .highlights-section {
+        padding: 55px 0;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+}
+
+
+/* =========================
+   ABOUT MEDIONE SECTION
+========================= */
+
+.about-section {
+    padding: 90px 0;
+    background: #f3f8fd;
+}
+
+/* About Image */
+.about-image {
+    position: relative;
+    padding: 15px;
+}
+
+.about-image img {
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(20, 70, 120, 0.13);
+}
+
+/* About Content */
+.about-tag {
+    display: inline-block;
+    color: #1689cf;
+    background: #e1f1ff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+}
+
+.about-content h2 {
+    color: #17365d;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 20px;
+}
+
+.about-content h2 span {
+    color: #1689cf;
+}
+
+.about-content > p {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 28px;
+}
+
+/* Mission and Vision */
+.about-feature {
+    padding-left: 18px;
+    border-left: 3px solid #1689cf;
+    margin-bottom: 22px;
+}
+
+.about-feature h5 {
+    color: #17365d;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.about-feature p {
+    color: #718096;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+/* Learn More Button */
+.about-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1769aa, #18a6c9);
+    padding: 13px 26px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+    transition: 0.3s;
+}
+
+.about-btn:hover {
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(23, 105, 170, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .about-section {
+        padding: 60px 0;
+    }
+
+    .about-image img {
+        height: 350px;
+    }
+
+    .about-content h2 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-content h2 {
+        font-size: 27px;
+    }
+}
+
+
+
+/* Medical Departments Section */
+.departments-section {
+    padding: 80px 0;
+    background: #f5faff;
+}
+
+.department-card {
+    height: 100%;
+    padding: 30px 25px;
+    background: #ffffff;
+    border: 1px solid #e5eff8;
+    border-radius: 18px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.department-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(23, 105, 170, 0.12);
+    border-color: #b8dcf5;
+}
+
+.department-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf5ff;
+    border-radius: 16px;
+    color: #1689cf;
+}
+
+.department-icon i {
+    font-size: 30px;
+}
+
+.department-card h5 {
+    color: #173b5e;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.department-card p {
+    color: #687b8d;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.department-card a {
+    color: #1689cf;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.department-card a:hover {
+    color: #105b94;
+}
+
+/* Doctors Section */
+.doctors-section {
+    padding: 80px 0;
+    background: #ffffff;
+}
+
+.doctor-card {
+    height: 100%;
+    background: #ffffff;
+    border: 1px solid #e5eff8;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(23, 105, 170, 0.12);
+}
+
+.doctor-image {
+    width: 100%;
+    height: 365px;
+    overflow: hidden;
+    background: #eaf5ff;
+}
+
+.doctor-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+.doctor-info {
+    padding: 25px 20px;
+    text-align: center;
+}
+
+.doctor-info h5 {
+    color: #173b5e;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.doctor-speciality {
+    color: #1689cf;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.doctor-department {
+    color: #687b8d;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.doctor-btn {
+    display: inline-block;
+    padding: 10px 22px;
+    background: #1769aa;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.doctor-btn:hover {
+    background: #105b94;
+    color: #ffffff;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 80px 0;
+    background: #f5faff;
+}
+
+.contact-info,
+.contact-form {
+    height: 100%;
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid #e5eff8;
+    border-radius: 18px;
+}
+
+.contact-info h4,
+.contact-form h4 {
+    color: #173b5e;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.contact-info > p {
+    color: #687b8d;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.contact-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf5ff;
+    color: #1689cf;
+    border-radius: 12px;
+    font-size: 21px;
+}
+
+.contact-item h6 {
+    color: #173b5e;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.contact-item p {
+    color: #687b8d;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.contact-form .form-label {
+    color: #173b5e;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.contact-form .form-control {
+    padding: 12px 14px;
+    border: 1px solid #dce8f2;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.contact-form .form-control:focus {
+    border-color: #1689cf;
+    box-shadow: 0 0 0 3px rgba(22, 137, 207, 0.1);
+}
+
+.contact-btn {
+    padding: 12px 28px;
+    background: #1769aa;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.contact-btn:hover {
+    background: #105b94;
+}
+
+
+/* Footer Section */
+.medione-footer {
+    padding: 65px 0 20px;
+    background: #123653;
+    color: #ffffff;
+}
+
+.footer-logo {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.footer-logo span {
+    color: #42b8ed;
+}
+
+.medione-footer p {
+    color: #c5d6e5;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.medione-footer h5 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    color: #c5d6e5;
+    font-size: 14px;
+    margin-bottom: 13px;
+}
+
+.footer-links a {
+    color: #c5d6e5;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #42b8ed;
+    padding-left: 5px;
+}
+
+.footer-contact i {
+    color: #42b8ed;
+    margin-right: 9px;
+}
+
+.footer-bottom {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* Footer Responsive */
+@media (max-width: 767px) {
+    .medione-footer {
+        padding: 45px 0 20px;
+    }
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1769aa;
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 20px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(23, 105, 170, 0.25);
+    transition: all 0.3s ease;
+    z-index: 999;
+    opacity: 0;
+visibility: hidden;
+pointer-events: none;
+}
+
+.back-to-top:hover {
+    background: #105b94;
+    color: #ffffff;
+    transform: translateY(-4px);
+}
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
