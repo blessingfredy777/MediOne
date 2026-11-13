@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{superadmin/fragments/head :: head('Patients & Admissions Registry')}"></head>
+<body class="superadmin-body">
+
+<div class="admin-layout">
+    <div th:replace="~{superadmin/fragments/sidebar :: sidebar(${activePage})}"></div>
+
+    <div class="admin-main">
+        <div th:replace="~{superadmin/fragments/topbar :: topbar}"></div>
+
+        <main class="page-container">
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}">Operation successful!</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="page-header-block">
+                <div>
+                    <h1 class="page-title">Patients &amp; Inpatient Admissions</h1>
+                    <p class="page-subtitle">Master patient registry, Electronic Health Record (EHR) lookup, bed allocations, and discharge management.</p>
+                </div>
+                <div>
+                    <button class="btn-sa-primary" type="button" data-bs-toggle="modal" data-bs-target="#admitPatientModal">
+                        <i class="bi bi-person-plus-fill"></i> Admit New Patient
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Toolbar -->
+            <div class="sa-card mb-4 p-3">
+                <form th:action="@{/superadmin/patients}" method="get" class="row g-3 align-items-center">
+                    <div class="col-md-5">
+                        <div class="position-relative">
+                            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text" name="search" th:value="${searchTerm}" class="form-control-sa ps-5" placeholder="Search by patient name, MRN, diagnosis..." data-sa-table-filter="patientsTable">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="status" class="form-select-sa" onchange="this.form.submit()">
+                            <option value="All" th:selected="${selectedStatus == 'All'}">All Admission Statuses</option>
+                            <option value="Inpatient" th:selected="${selectedStatus == 'Inpatient'}">Inpatients (Currently Admitted)</option>
+                            <option value="Emergency" th:selected="${selectedStatus == 'Emergency'}">Emergency Triage</option>
+                            <option value="Outpatient" th:selected="${selectedStatus == 'Outpatient'}">Outpatients (OPD)</option>
+                            <option value="Discharged" th:selected="${selectedStatus == 'Discharged'}">Discharged</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 text-md-end">
+                        <a th:href="@{/superadmin/patients}" class="btn-sa-secondary btn-sm">Reset Filters</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Patients Table -->
+            <div class="sa-card">
+                <div class="table-responsive-clean">
+                    <table class="table-sa" id="patientsTable">
+                        <thead>
+                            <tr>
+                                <th>Patient &amp; MRN</th>
+                                <th>Diagnosis / Condition</th>
+                                <th>Department &amp; Doctor</th>
+                                <th>Bed / Room</th>
+                                <th>Insurance Provider</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${patients}">
+                                <td>
+                                    <div class="fw-bold text-dark" th:text="${p.name}">Jane Smith</div>
+                                    <div class="text-primary fw-semibold small" th:text="${p.mrn}">MRN-2026-8910</div>
+                                    <div class="text-muted" style="font-size: 11.5px;">
+                                        <span th:text="${p.age}">48</span> yrs &bull; 
+                                        <span th:text="${p.gender}">Female</span> &bull; 
+                                        <span class="badge bg-danger-subtle text-danger" th:text="${p.bloodGroup}">O+</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold text-dark small" th:text="${p.condition}">Acute Coronary Syndrome Post-Angioplasty</div>
+                                    <div class="text-muted small">Admitted: <span th:text="${p.admissionDate}">2026-11-08</span></div>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold text-dark small" th:text="${p.department}">Cardiology</div>
+                                    <div class="text-muted small" th:text="${p.assignedDoctor}">Dr. David Ross</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary border" th:text="${p.bedNumber}">ICU-Bed-04</span>
+                                </td>
+                                <td>
+                                    <div class="small fw-semibold text-dark" th:text="${p.insuranceProvider}">BlueCross Silver</div>
+                                    <div class="text-muted" style="font-size: 11px;" th:text="${p.phone}">+1 555-111-2233</div>
+                                </td>
+                                <td>
+                                    <span th:if="${p.status == 'Inpatient'}" class="badge-status badge-inpatient"><i class="bi bi-hospital"></i> Inpatient</span>
+                                    <span th:if="${p.status == 'Emergency'}" class="badge-status badge-emergency"><i class="bi bi-exclamation-triangle"></i> Emergency</span>
+                                    <span th:if="${p.status == 'Outpatient'}" class="badge-status badge-outpatient"><i class="bi bi-person-walking"></i> Outpatient</span>
+                                    <span th:if="${p.status == 'Discharged'}" class="badge-status badge-discharged"><i class="bi bi-check-circle"></i> Discharged</span>
+                                </td>
+                                <td>
+                                    <form th:if="${p.status != 'Discharged'}" th:action="@{'/superadmin/patients/' + ${p.id} + '/discharge'}" method="post">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold" onclick="return confirm('Confirm patient discharge summary?')">
+                                            Discharge
+                                        </button>
+                                    </form>
+                                    <span th:if="${p.status == 'Discharged'}" class="text-muted small">Completed</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div th:replace="~{superadmin/fragments/footer :: footer}"></div>
+    </div>
+</div>
+
+<!-- Modal: Admit Patient -->
+<div class="modal fade" id="admitPatientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-content-sa">
+            <form th:action="@{/superadmin/patients/add}" method="post">
+                <div class="modal-header modal-header-sa">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-hospital text-primary me-2"></i> Patient Admission Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-sa">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Patient Name</label>
+                            <input type="text" name="name" class="form-control-sa" placeholder="e.g. Thomas Avery" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label-sa">Age</label>
+                            <input type="number" name="age" class="form-control-sa" value="45" min="1" max="120" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label-sa">Gender</label>
+                            <select name="gender" class="form-select-sa">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Blood Group</label>
+                            <select name="bloodGroup" class="form-select-sa">
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Department</label>
+                            <select name="department" class="form-select-sa">
+                                <option th:each="d : ${departments}" th:value="${d.name}" th:text="${d.name}">Cardiology</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Status</label>
+                            <select name="status" class="form-select-sa">
+                                <option value="Inpatient">Inpatient</option>
+                                <option value="Emergency">Emergency</option>
+                                <option value="Outpatient">Outpatient</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Condition / Diagnosis</label>
+                            <input type="text" name="condition" class="form-control-sa" placeholder="Primary diagnosis" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Bed / Room</label>
+                            <input type="text" name="bedNumber" class="form-control-sa" placeholder="e.g. ICU-02 or CARD-101" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Contact Phone</label>
+                            <input type="text" name="phone" class="form-control-sa" placeholder="+1 (555) 000-0000" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Emergency Contact</label>
+                            <input type="text" name="emergencyContact" class="form-control-sa" placeholder="Relative Name & Phone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Insurance Provider</label>
+                            <input type="text" name="insuranceProvider" class="form-control-sa" placeholder="e.g. Medicare Advantage" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Assigned Doctor</label>
+                            <select name="assignedDoctor" class="form-select-sa">
+                                <option th:each="doc : ${doctors}" th:value="${doc.name}" th:text="${doc.name}">Dr. David Ross</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-sa">
+                    <button type="button" class="btn-sa-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-sa-primary">Admit Patient</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

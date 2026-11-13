@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{superadmin/fragments/head :: head('Executive Overview')}"></head>
+<body class="superadmin-body">
+
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <div th:replace="~{superadmin/fragments/sidebar :: sidebar(${activePage})}"></div>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+        <!-- Topbar -->
+        <div th:replace="~{superadmin/fragments/topbar :: topbar}"></div>
+
+        <!-- Page Container -->
+        <main class="page-container">
+            <!-- Flash Message -->
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}">Operation successful!</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header-block">
+                <div>
+                    <h1 class="page-title">Executive Super Admin Dashboard</h1>
+                    <p class="page-subtitle">Hospital-wide intelligence, clinical metrics, live bed occupancy, and operational governance.</p>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn-sa-secondary" type="button" data-bs-toggle="modal" data-bs-target="#admitPatientModal">
+                        <i class="bi bi-person-plus"></i> Admit Patient
+                    </button>
+                    <button class="btn-sa-primary" type="button" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                        <i class="bi bi-plus-lg"></i> Register Doctor
+                    </button>
+                </div>
+            </div>
+
+            <!-- Emergency & Triage Overview Alert -->
+            <div class="emergency-banner">
+                <div class="emergency-info">
+                    <div class="emergency-icon-ring">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-danger">Level-1 Emergency &amp; Trauma Status: High Inflow</div>
+                        <div class="text-secondary small">Ground Floor ER Zone currently has 12 active trauma patients under care. 4 triage beds available.</div>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/superadmin/wards}" class="btn btn-sm btn-outline-danger fw-semibold bg-white">
+                        <i class="bi bi-eye"></i> View ICU Beds
+                    </a>
+                </div>
+            </div>
+
+            <!-- Metric Cards Grid -->
+            <div class="row g-4 mb-4">
+                <!-- Card 1 -->
+                <div class="col-sm-6 col-xl-4 col-xxl-2">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-blue">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <span class="metric-badge badge-trend-up">
+                                <i class="bi bi-arrow-up-right"></i> +12%
+                            </span>
+                        </div>
+                        <div class="metric-value" th:text="${stats.totalPatients}">1,482</div>
+                        <div class="metric-label">Total Patients</div>
+                        <div class="metric-subtext">Active hospital registry</div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-sm-6 col-xl-4 col-xxl-2">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-emerald">
+                                <i class="bi bi-heart-pulse-fill"></i>
+                            </div>
+                            <span class="metric-badge badge-trend-up">
+                                <i class="bi bi-check-lg"></i> 94%
+                            </span>
+                        </div>
+                        <div class="metric-value" th:text="${stats.onDutyDoctors} + '/' + ${stats.totalDoctors}">64/78</div>
+                        <div class="metric-label">On-Duty Doctors</div>
+                        <div class="metric-subtext">Active shifts &amp; surgery</div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-sm-6 col-xl-4 col-xxl-2">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-cyan">
+                                <i class="bi bi-calendar2-week-fill"></i>
+                            </div>
+                            <span class="metric-badge badge-trend-neutral">Today</span>
+                        </div>
+                        <div class="metric-value" th:text="${stats.todayAppointments}">198</div>
+                        <div class="metric-label">Appointments</div>
+                        <div class="metric-subtext">84 completed, 42 active</div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col-sm-6 col-xl-4 col-xxl-2">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-amber">
+                                <i class="bi bi-hospital-fill"></i>
+                            </div>
+                            <span class="metric-badge badge-trend-neutral" th:text="${stats.bedOccupancyPercentage} + '%'">84.6%</span>
+                        </div>
+                        <div class="metric-value" th:text="${stats.occupiedBeds} + '/' + ${stats.totalBeds}">254/300</div>
+                        <div class="metric-label">Bed Occupancy</div>
+                        <div class="metric-subtext">46 vacant beds left</div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="col-sm-6 col-xl-4 col-xxl-2">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-purple">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <span class="metric-badge badge-trend-up">
+                                <i class="bi bi-arrow-up-right"></i> +8.6%
+                            </span>
+                        </div>
+                        <div class="metric-value">$384.9k</div>
+                        <div class="metric-label">Monthly Inflow</div>
+                        <div class="metric-subtext">Billing &amp; insurance</div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="col-sm-6 col-xl-4 col-xxl-2">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-rose">
+                                <i class="bi bi-shield-fill-exclamation"></i>
+                            </div>
+                            <span class="metric-badge badge-trend-down">Priority</span>
+                        </div>
+                        <div class="metric-value" th:text="${stats.criticalAlertsCount}">3</div>
+                        <div class="metric-label">Critical Alerts</div>
+                        <div class="metric-subtext">ICU &amp; stock alerts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="row g-4 mb-4">
+                <!-- Chart 1: Admissions and Outpatients Trend -->
+                <div class="col-lg-8">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-graph-up text-primary"></i>
+                                Monthly Patient Trends (OPD vs. Inpatient)
+                            </h3>
+                            <span class="badge bg-light text-muted border small">Past 6 Months</span>
+                        </div>
+                        <div style="height: 310px; position: relative;">
+                            <canvas id="admissionsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Department Workload Distribution -->
+                <div class="col-lg-4">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-pie-chart text-info"></i>
+                                Department Workload
+                            </h3>
+                            <span class="badge bg-light text-muted border small">Active Patients</span>
+                        </div>
+                        <div style="height: 310px; position: relative;">
+                            <canvas id="departmentWorkloadChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Breakdown & ICU Monitor Row -->
+            <div class="row g-4 mb-4">
+                <!-- Revenue Stream Bar Chart -->
+                <div class="col-lg-7">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-bar-chart-steps text-success"></i>
+                                Revenue Stream by Hospital Unit
+                            </h3>
+                            <a th:href="@{/superadmin/billing}" class="btn-sa-outline btn-sm">Full Ledger</a>
+                        </div>
+                        <div style="height: 240px; position: relative;">
+                            <canvas id="revenueBreakdownChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live ICU & Ward Status Quick Monitor -->
+                <div class="col-lg-5">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-hospital text-danger"></i>
+                                Critical Ward Capacities
+                            </h3>
+                            <a th:href="@{/superadmin/wards}" class="btn-sa-outline btn-sm">Manage Beds</a>
+                        </div>
+                        <div class="d-flex flex-column gap-3">
+                            <div>
+                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                    <span>Intensive Care Unit (ICU)</span>
+                                    <span class="text-danger">31 / 35 Beds (88.5%)</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 88.5%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                    <span>Cardiology Step-Down Ward</span>
+                                    <span class="text-primary">38 / 45 Beds (84.4%)</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 84.4%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                    <span>Pediatric Inpatient Unit</span>
+                                    <span class="text-info">41 / 50 Beds (82.0%)</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 82.0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between small fw-bold mb-1">
+                                    <span>Orthopedic Recovery Ward</span>
+                                    <span class="text-success">35 / 40 Beds (87.5%)</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 87.5%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables Row: Today's Appointments & Recent Admissions -->
+            <div class="row g-4 mb-4">
+                <!-- Today's Appointments -->
+                <div class="col-lg-7">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-clock-history text-primary"></i>
+                                Today's OPD &amp; Surgery Schedule
+                            </h3>
+                            <a th:href="@{/superadmin/appointments}" class="btn-sa-outline btn-sm">View All Schedule</a>
+                        </div>
+                        <div class="table-responsive-clean">
+                            <table class="table-sa">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Consulting Doctor</th>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="apt : ${todayAppointments}">
+                                        <td>
+                                            <div class="fw-bold" th:text="${apt.patientName}">Jane Smith</div>
+                                            <div class="text-muted small" th:text="${apt.patientMrn}">MRN-2026-8910</div>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold text-dark" th:text="${apt.doctorName}">Dr. David Ross</div>
+                                            <div class="text-muted small" th:text="${apt.department}">Cardiology</div>
+                                        </td>
+                                        <td class="fw-semibold" th:text="${apt.appointmentTime}">09:30 AM</td>
+                                        <td>
+                                            <span class="badge bg-light text-secondary border small" th:text="${apt.type}">Follow-up</span>
+                                        </td>
+                                        <td>
+                                            <span th:if="${apt.status == 'Completed'}" class="badge-status badge-completed"><i class="bi bi-check-circle"></i> Completed</span>
+                                            <span th:if="${apt.status == 'In-Progress'}" class="badge-status badge-inprogress"><i class="bi bi-hourglass-split"></i> In-Progress</span>
+                                            <span th:if="${apt.status == 'Scheduled'}" class="badge-status badge-scheduled"><i class="bi bi-calendar-event"></i> Scheduled</span>
+                                            <span th:if="${apt.status == 'Cancelled'}" class="badge-status badge-cancelled"><i class="bi bi-x-circle"></i> Cancelled</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Patient Admissions -->
+                <div class="col-lg-5">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-person-check text-success"></i>
+                                Recent Inpatient Admissions
+                            </h3>
+                            <a th:href="@{/superadmin/patients}" class="btn-sa-outline btn-sm">All Patients</a>
+                        </div>
+                        <div class="table-responsive-clean">
+                            <table class="table-sa">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Department</th>
+                                        <th>Bed</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="p : ${recentPatients}">
+                                        <td>
+                                            <div class="fw-bold" th:text="${p.name}">Jane Smith</div>
+                                            <div class="text-muted small">Age: <span th:text="${p.age}">48</span> | <span th:text="${p.bloodGroup}">O+</span></div>
+                                        </td>
+                                        <td class="small" th:text="${p.department}">Cardiology</td>
+                                        <td>
+                                            <span class="badge bg-primary-subtle text-primary border small" th:text="${p.bedNumber}">ICU-04</span>
+                                        </td>
+                                        <td>
+                                            <span th:if="${p.status == 'Inpatient'}" class="badge-status badge-inpatient">Inpatient</span>
+                                            <span th:if="${p.status == 'Emergency'}" class="badge-status badge-emergency">Emergency</span>
+                                            <span th:if="${p.status == 'Outpatient'}" class="badge-status badge-outpatient">Outpatient</span>
+                                            <span th:if="${p.status == 'Discharged'}" class="badge-status badge-discharged">Discharged</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Stream & Quick On-Call Doctors -->
+            <div class="row g-4">
+                <!-- Activity & Audit Stream -->
+                <div class="col-lg-7">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-activity text-primary"></i>
+                                Real-Time Hospital Activity &amp; Audit Log
+                            </h3>
+                            <a th:href="@{/superadmin/audit-logs}" class="btn-sa-outline btn-sm">Full Audit Trail</a>
+                        </div>
+                        <ul class="activity-feed-list">
+                            <li th:each="log : ${auditLogs}" class="activity-feed-item">
+                                <div class="activity-icon-bubble" 
+                                     th:classappend="${log.severity == 'CRITICAL' ? 'bg-danger-subtle text-danger' : (log.severity == 'WARNING' ? 'bg-warning-subtle text-warning' : 'bg-primary-subtle text-primary')}">
+                                    <i th:class="${log.severity == 'CRITICAL' ? 'bi bi-shield-x' : (log.severity == 'WARNING' ? 'bi bi-exclamation-circle' : 'bi bi-check-circle')}"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="activity-title" th:text="${log.action}">BED_STATUS_UPDATE</span>
+                                        <span class="activity-time" th:text="${log.timestamp}">2026-11-12 14:10</span>
+                                    </div>
+                                    <div class="activity-desc" th:text="${log.details}">ICU Bed 04 marked available.</div>
+                                    <div class="small text-muted">
+                                        <span class="fw-semibold text-secondary" th:text="${log.actor}">Dr. Marcus Reed</span> 
+                                        &bull; Module: <span th:text="${log.targetModule}">Ward</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Specialist Doctors Highlights -->
+                <div class="col-lg-5">
+                    <div class="sa-card h-100">
+                        <div class="card-header-clean">
+                            <h3 class="card-title-clean">
+                                <i class="bi bi-person-badge text-primary"></i>
+                                Department Heads &amp; Specialists
+                            </h3>
+                            <a th:href="@{/superadmin/doctors}" class="btn-sa-outline btn-sm">View All Doctors</a>
+                        </div>
+                        <div class="d-flex flex-column gap-3">
+                            <div th:each="doc : ${doctors}" th:if="${docStat.index < 4}" class="d-flex align-items-center justify-content-between p-2 rounded border bg-light">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img th:src="@{'/' + ${doc.image}}" alt="Doctor" class="table-user-avatar"
+                                         onerror="this.src='/images/doctor-1.jpg'">
+                                    <div>
+                                        <div class="fw-bold text-dark small" th:text="${doc.name}">Dr. David Ross</div>
+                                        <div class="text-muted" style="font-size: 11.5px;" th:text="${doc.specialty}">Interventional Cardiology</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span th:if="${doc.status == 'Active'}" class="badge-status badge-active small">Active</span>
+                                    <span th:if="${doc.status == 'In Surgery'}" class="badge-status badge-surgery small">In Surgery</span>
+                                    <span th:if="${doc.status == 'On Leave'}" class="badge-status badge-leave small">On Leave</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div th:replace="~{superadmin/fragments/footer :: footer}"></div>
+    </div>
+</div>
+
+<!-- Modal 1: Add Doctor -->
+<div class="modal fade" id="addDoctorModal" tabindex="-1" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-content-sa">
+            <form th:action="@{/superadmin/doctors/add}" method="post">
+                <div class="modal-header modal-header-sa">
+                    <h5 class="modal-title fw-bold" id="addDoctorModalLabel">
+                        <i class="bi bi-person-plus text-primary me-2"></i> Register New Medical Specialist
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-sa">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Doctor Full Name</label>
+                            <input type="text" name="name" class="form-control-sa" placeholder="e.g. Dr. Julian Croft" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Specialty / Designation</label>
+                            <input type="text" name="specialty" class="form-control-sa" placeholder="e.g. Senior Pediatric Cardiologist" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Department</label>
+                            <select name="department" class="form-select-sa" required>
+                                <option th:each="d : ${departments}" th:value="${d.name}" th:text="${d.name}">Cardiology</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Qualifications</label>
+                            <input type="text" name="qualification" class="form-control-sa" placeholder="e.g. MD, DM, FACC" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Years of Experience</label>
+                            <input type="number" name="experienceYears" class="form-control-sa" value="8" min="1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Consultation Fee ($)</label>
+                            <input type="number" name="consultationFee" class="form-control-sa" value="150.0" step="5" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Assigned Room / Suite</label>
+                            <input type="text" name="roomNo" class="form-control-sa" placeholder="Suite 305" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Email Address</label>
+                            <input type="email" name="email" class="form-control-sa" placeholder="doctor@medionehealth.org" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Phone Number</label>
+                            <input type="text" name="phone" class="form-control-sa" placeholder="+1 (555) 000-0000" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Available Days</label>
+                            <input type="text" name="availableDays" class="form-control-sa" placeholder="Mon, Wed, Fri" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">OPD Timings</label>
+                            <input type="text" name="opdTimings" class="form-control-sa" placeholder="09:00 AM - 02:00 PM" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-sa">
+                    <button type="button" class="btn-sa-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-sa-primary">Save Doctor Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2: Admit Patient -->
+<div class="modal fade" id="admitPatientModal" tabindex="-1" aria-labelledby="admitPatientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-content-sa">
+            <form th:action="@{/superadmin/patients/add}" method="post">
+                <div class="modal-header modal-header-sa">
+                    <h5 class="modal-title fw-bold" id="admitPatientModalLabel">
+                        <i class="bi bi-hospital text-primary me-2"></i> Patient Admission Form
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-sa">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Patient Full Name</label>
+                            <input type="text" name="name" class="form-control-sa" placeholder="e.g. Thomas Avery" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label-sa">Age</label>
+                            <input type="number" name="age" class="form-control-sa" value="45" min="1" max="120" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label-sa">Gender</label>
+                            <select name="gender" class="form-select-sa">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Blood Group</label>
+                            <select name="bloodGroup" class="form-select-sa">
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Department</label>
+                            <select name="department" class="form-select-sa">
+                                <option th:each="d : ${departments}" th:value="${d.name}" th:text="${d.name}">Cardiology</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label-sa">Admission Type</label>
+                            <select name="status" class="form-select-sa">
+                                <option value="Inpatient">Inpatient</option>
+                                <option value="Emergency">Emergency</option>
+                                <option value="Outpatient">Outpatient</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Primary Diagnosis / Condition</label>
+                            <input type="text" name="condition" class="form-control-sa" placeholder="e.g. Acute Coronary Evaluation" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Allocated Bed / Room</label>
+                            <input type="text" name="bedNumber" class="form-control-sa" placeholder="e.g. ICU-03 or CARD-101" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Primary Contact Phone</label>
+                            <input type="text" name="phone" class="form-control-sa" placeholder="+1 (555) 123-4567" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Emergency Relative Contact</label>
+                            <input type="text" name="emergencyContact" class="form-control-sa" placeholder="e.g. Sarah Avery (+1 555-987-6543)" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Insurance Provider</label>
+                            <input type="text" name="insuranceProvider" class="form-control-sa" placeholder="e.g. BlueCross Gold" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-sa">Consulting Doctor</label>
+                            <select name="assignedDoctor" class="form-select-sa">
+                                <option th:each="doc : ${doctors}" th:value="${doc.name}" th:text="${doc.name} + ' (' + ${doc.department} + ')'">Dr. Alexander Ross</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-sa">
+                    <button type="button" class="btn-sa-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-sa-primary">Admit Patient</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

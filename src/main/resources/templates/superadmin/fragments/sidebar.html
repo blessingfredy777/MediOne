@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<aside th:fragment="sidebar(activePage)" class="admin-sidebar">
+    <!-- Brand / Header -->
+    <div class="sidebar-header">
+        <a th:href="@{/superadmin}" class="brand-link">
+            <div class="brand-icon">
+                <i class="bi bi-hospital"></i>
+            </div>
+            <div class="brand-details">
+                <span class="brand-title">Medi<span>One</span></span>
+                <span class="brand-role-badge">Super Admin</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Navigation Menu -->
+    <div class="sidebar-content">
+        <div class="sidebar-group-title">Executive Overview</div>
+        <a th:href="@{/superadmin}" class="nav-item-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <div class="sidebar-group-title">Clinical & Care</div>
+        <a th:href="@{/superadmin/doctors}" class="nav-item-link" th:classappend="${activePage == 'doctors'} ? 'active' : ''">
+            <i class="bi bi-person-badge"></i>
+            <span>Doctors & Specialists</span>
+            <span class="nav-badge bg-primary text-white">8</span>
+        </a>
+        <a th:href="@{/superadmin/patients}" class="nav-item-link" th:classappend="${activePage == 'patients'} ? 'active' : ''">
+            <i class="bi bi-people"></i>
+            <span>Patients & Admissions</span>
+        </a>
+        <a th:href="@{/superadmin/appointments}" class="nav-item-link" th:classappend="${activePage == 'appointments'} ? 'active' : ''">
+            <i class="bi bi-calendar-check"></i>
+            <span>Appointments & OPD</span>
+        </a>
+        <a th:href="@{/superadmin/wards}" class="nav-item-link" th:classappend="${activePage == 'wards'} ? 'active' : ''">
+            <i class="bi bi-hospital-fill"></i>
+            <span>Ward & Bed Matrix</span>
+            <span class="nav-badge bg-warning text-dark">Live</span>
+        </a>
+
+        <div class="sidebar-group-title">Hospital Operations</div>
+        <a th:href="@{/superadmin/departments}" class="nav-item-link" th:classappend="${activePage == 'departments'} ? 'active' : ''">
+            <i class="bi bi-diagram-3"></i>
+            <span>Departments & Units</span>
+        </a>
+        <a th:href="@{/superadmin/billing}" class="nav-item-link" th:classappend="${activePage == 'billing'} ? 'active' : ''">
+            <i class="bi bi-credit-card-2-front"></i>
+            <span>Billing & Ledger</span>
+        </a>
+
+        <div class="sidebar-group-title">Governance & Tech</div>
+        <a th:href="@{/superadmin/audit-logs}" class="nav-item-link" th:classappend="${activePage == 'audit-logs'} ? 'active' : ''">
+            <i class="bi bi-shield-check"></i>
+            <span>Audit & Access Logs</span>
+        </a>
+        <a th:href="@{/superadmin/settings}" class="nav-item-link" th:classappend="${activePage == 'settings'} ? 'active' : ''">
+            <i class="bi bi-sliders"></i>
+            <span>System Settings</span>
+        </a>
+    </div>
+
+    <!-- Sidebar Footer / Status -->
+    <div class="sidebar-footer">
+        <div class="system-status-card mb-2">
+            <div class="system-status-indicator">
+                <span class="pulse-dot"></span>
+                <span>System Operational</span>
+            </div>
+            <div class="status-meta">Bed Occupancy: 84.6% • Uptime: 99.98%</div>
+        </div>
+
+        <a th:href="@{/}" class="btn-sa-outline w-100 justify-content-center text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>Public Hospital Site</span>
+        </a>
+    </div>
+</aside>
+</html>

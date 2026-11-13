@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{superadmin/fragments/head :: head('Hospital Billing & Financial Ledger')}"></head>
+<body class="superadmin-body">
+
+<div class="admin-layout">
+    <div th:replace="~{superadmin/fragments/sidebar :: sidebar(${activePage})}"></div>
+
+    <div class="admin-main">
+        <div th:replace="~{superadmin/fragments/topbar :: topbar}"></div>
+
+        <main class="page-container">
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}">Operation successful!</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="page-header-block">
+                <div>
+                    <h1 class="page-title">Hospital Billing &amp; Financial Ledger</h1>
+                    <p class="page-subtitle">Patient invoices, insurance pre-authorization claims, copay collections, and departmental revenue auditing.</p>
+                </div>
+                <div>
+                    <button class="btn-sa-secondary btn-sm" onclick="window.print()">
+                        <i class="bi bi-printer"></i> Print Audit Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Financial Summary Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-purple"><i class="bi bi-cash-stack"></i></div>
+                            <span class="metric-badge badge-trend-up">+8.4%</span>
+                        </div>
+                        <div class="metric-value">$384,920</div>
+                        <div class="metric-label">Monthly Gross Invoiced</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-emerald"><i class="bi bi-shield-check"></i></div>
+                            <span class="metric-badge badge-trend-up">94%</span>
+                        </div>
+                        <div class="metric-value">$286,400</div>
+                        <div class="metric-label">Insurance Claims Cleared</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-amber"><i class="bi bi-clock-history"></i></div>
+                            <span class="metric-badge badge-trend-neutral">Pending</span>
+                        </div>
+                        <div class="metric-value">$18,450</div>
+                        <div class="metric-label">Patient Copay Outstanding</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-box icon-blue"><i class="bi bi-pie-chart"></i></div>
+                            <span class="metric-badge badge-trend-up">96.8%</span>
+                        </div>
+                        <div class="metric-value">96.8%</div>
+                        <div class="metric-label">Collection Efficiency</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoices Table -->
+            <div class="sa-card">
+                <div class="card-header-clean">
+                    <h3 class="card-title-clean">
+                        <i class="bi bi-receipt text-primary"></i> Master Invoices &amp; Claims Register
+                    </h3>
+                    <input type="text" class="form-control-sa w-auto py-1 px-3 small" placeholder="Filter invoices..." data-sa-table-filter="invoicesTable">
+                </div>
+
+                <div class="table-responsive-clean">
+                    <table class="table-sa" id="invoicesTable">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Patient &amp; MRN</th>
+                                <th>Services Rendered</th>
+                                <th>Gross Total</th>
+                                <th>Insurance Covered</th>
+                                <th>Patient Payable</th>
+                                <th>Payment Method</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="inv : ${invoices}">
+                                <td>
+                                    <span class="fw-bold text-primary font-monospace" th:text="${inv.invoiceNumber}">MED-INV-2026-8001</span>
+                                    <div class="text-muted small" th:text="${inv.dateIssued}">2026-11-10</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark" th:text="${inv.patientName}">Jane Smith</div>
+                                    <div class="text-muted small" th:text="${inv.patientMrn}">MRN-2026-8910</div>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold text-dark small" th:text="${inv.services}">Coronary Stent & 4-Day ICU Stay</div>
+                                    <div class="text-muted small" th:text="${inv.department}">Cardiology</div>
+                                </td>
+                                <td class="fw-bold text-dark" th:text="'$' + ${#numbers.formatDecimal(inv.totalAmount, 1, 'COMMA', 2, 'POINT')}">$14,250.00</td>
+                                <td class="text-success fw-semibold" th:text="'$' + ${#numbers.formatDecimal(inv.insuranceCovered, 1, 'COMMA', 2, 'POINT')}">$12,000.00</td>
+                                <td class="text-danger fw-bold" th:text="'$' + ${#numbers.formatDecimal(inv.patientPayable, 1, 'COMMA', 2, 'POINT')}">$2,250.00</td>
+                                <td>
+                                    <span class="badge bg-light text-secondary border small" th:text="${inv.paymentMethod}">Health Insurance</span>
+                                </td>
+                                <td>
+                                    <span th:if="${inv.paymentStatus == 'Paid'}" class="badge-status badge-completed"><i class="bi bi-check-circle"></i> Paid</span>
+                                    <span th:if="${inv.paymentStatus == 'Pending'}" class="badge-status badge-cancelled"><i class="bi bi-clock"></i> Pending</span>
+                                    <span th:if="${inv.paymentStatus == 'Claim Processing'}" class="badge-status badge-inprogress"><i class="bi bi-hourglass-split"></i> Claim</span>
+                                    <span th:if="${inv.paymentStatus == 'Partially Paid'}" class="badge-status badge-leave"><i class="bi bi-pie-chart"></i> Partial</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Status
+                                        </button>
+                                        <ul class="dropdown-menu shadow border-0 p-1 dropdown-menu-end" style="border-radius: 8px;">
+                                            <li>
+                                                <form th:action="@{'/superadmin/billing/' + ${inv.id} + '/status'}" method="post">
+                                                    <input type="hidden" name="status" value="Paid">
+                                                    <button type="submit" class="dropdown-item small text-success"><i class="bi bi-check-circle me-1"></i> Mark Paid</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form th:action="@{'/superadmin/billing/' + ${inv.id} + '/status'}" method="post">
+                                                    <input type="hidden" name="status" value="Claim Processing">
+                                                    <button type="submit" class="dropdown-item small text-primary"><i class="bi bi-hourglass me-1"></i> Claim Processing</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form th:action="@{'/superadmin/billing/' + ${inv.id} + '/status'}" method="post">
+                                                    <input type="hidden" name="status" value="Pending">
+                                                    <button type="submit" class="dropdown-item small text-danger"><i class="bi bi-clock me-1"></i> Mark Pending</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div th:replace="~{superadmin/fragments/footer :: footer}"></div>
+    </div>
+</div>
+
+</body>
+</html>

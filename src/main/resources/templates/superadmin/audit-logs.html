@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{superadmin/fragments/head :: head('Hospital Security & Audit Logs')}"></head>
+<body class="superadmin-body">
+
+<div class="admin-layout">
+    <div th:replace="~{superadmin/fragments/sidebar :: sidebar(${activePage})}"></div>
+
+    <div class="admin-main">
+        <div th:replace="~{superadmin/fragments/topbar :: topbar}"></div>
+
+        <main class="page-container">
+            <div class="page-header-block">
+                <div>
+                    <h1 class="page-title">Hospital Security &amp; Audit Logs</h1>
+                    <p class="page-subtitle">Immutable system audit trail, HIPAA access monitoring, role activities, and infrastructure diagnostics.</p>
+                </div>
+                <div>
+                    <span class="badge bg-light text-success border p-2">
+                        <i class="bi bi-shield-check me-1"></i> Audit Tamper-Proofing Active
+                    </span>
+                </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="sa-card mb-4 p-3">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-6">
+                        <div class="position-relative">
+                            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text" class="form-control-sa ps-5" placeholder="Search audit logs by actor, action, IP, or details..." data-sa-table-filter="auditTable">
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <span class="text-muted small">Total Recorded Events: <strong th:text="${#lists.size(auditLogs)}">6</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Trail Table -->
+            <div class="sa-card">
+                <div class="table-responsive-clean">
+                    <table class="table-sa" id="auditTable">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Event ID &amp; Module</th>
+                                <th>Actor &amp; Role</th>
+                                <th>Action Performed</th>
+                                <th>IP Address</th>
+                                <th>Severity</th>
+                                <th>Audit Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="log : ${auditLogs}">
+                                <td class="font-monospace text-muted small" th:text="${log.timestamp}">2026-11-12 14:10:00</td>
+                                <td>
+                                    <span class="fw-bold text-dark font-monospace" th:text="${log.id}">LOG-001</span>
+                                    <div class="text-muted small" th:text="${log.targetModule}">Ward Management</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark small" th:text="${log.actor}">Dr. Marcus Reed</div>
+                                    <span class="badge bg-light text-secondary border" style="font-size: 10px;" th:text="${log.role}">Super Admin</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary font-monospace small" th:text="${log.action}">BED_STATUS_UPDATE</span>
+                                </td>
+                                <td class="font-monospace text-muted small" th:text="${log.ipAddress}">192.168.1.10</td>
+                                <td>
+                                    <span th:if="${log.severity == 'INFO'}" class="badge-status badge-active small">INFO</span>
+                                    <span th:if="${log.severity == 'WARNING'}" class="badge-status badge-leave small">WARNING</span>
+                                    <span th:if="${log.severity == 'CRITICAL'}" class="badge-status badge-emergency small">CRITICAL</span>
+                                </td>
+                                <td class="small text-secondary" th:text="${log.details}">Bed ICU-04 shifted to Cleaning protocol.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div th:replace="~{superadmin/fragments/footer :: footer}"></div>
+    </div>
+</div>
+
+</body>
+</html>
